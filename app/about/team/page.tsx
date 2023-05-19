@@ -2,11 +2,10 @@ import { Metadata } from 'next'
 import React from 'react'
 
 export const metadata: Metadata = {
-  title: 'About | Next App'
+  title: 'team | Next App'
 }
-
-export default function About() {
+export default function Team() {
   return (
-    <h3>Select subitems</h3>
+    <div>Team</div>
   )
 }
