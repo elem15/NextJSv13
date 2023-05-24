@@ -1,37 +1,39 @@
+'use client'
+import Posts from '@/components/Posts'
+import Preloader from '@/components/Preloader/page'
+import Search from '@/components/Search'
+import { getData } from '@/services/getPosts'
 import { Metadata } from 'next'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
-export interface Post {
-  userId: number
-  id: number
-  title: string
-  body: string
-}
-
-async function getData(): Promise<Post[]> {
-  const data = await fetch('https://jsonplaceholder.typicode.com/posts',
-    { next: { revalidate: 60 } })
-  return data.json()
-}
 
 export const metadata: Metadata = {
   title: 'blog | Next App'
 }
 
-export default async function Blog() {
-  const posts = await getData()
+export default function Blog() {
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    getData()
+      .then(posts => {
+        setPosts(posts)
+      })
+      .finally(() => setLoading(false))
+  }, [])
+
   return (
     <div>
       <h1>Blog</h1>
-      <ul>
-        {posts.map((post) => {
-          return (
-            <li key={post.id}>
-              <Link href={`/blog/${post.id}`}>{post.title}</Link>
-            </li>
-          )
-        })}
-      </ul>
+      <Search setPosts={setPosts} />
+      {
+        loading ? (
+          <Preloader />
+        ) : (
+          <Posts posts={posts} />
+        )
+      }
+
     </div>
   )
 }
