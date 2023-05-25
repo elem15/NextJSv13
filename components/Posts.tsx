@@ -1,23 +1,24 @@
 'use client'
 
-import { usePosts } from '@/store'
 import Link from 'next/link'
-import { useEffect } from 'react'
 import Preloader from './Preloader/page'
-import { shallow } from 'zustand/shallow'
+import useSWR from 'swr'
+import { getData } from '@/services/getPosts'
 
 export default function Posts() {
-  const [posts, loading, getAllPosts] = usePosts(state => [state.posts, state.loading, state.getAllPosts], shallow)
-  useEffect(() => {
-    getAllPosts()
-  }, [getAllPosts])
-  if (!posts.length) {
+  // const [posts, loading, getAllPosts] = usePosts(state => [state.posts, state.loading, state.getAllPosts], shallow)
+  // useEffect(() => {
+  //   getAllPosts()
+  // }, [getAllPosts])
+  const { data, isLoading } = useSWR('posts', getData)
+  const posts = data as Post[]
+  if (!isLoading && !posts.length) {
     return <h4>No posts founded</h4>
   }
   return (
     <>
       {
-        loading ? (
+        isLoading ? (
           <Preloader />
         ) : (
           <ul>
