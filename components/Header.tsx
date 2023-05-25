@@ -1,13 +1,16 @@
-import Link from 'next/link'
 import React from 'react'
+import Navigation from './Navigation'
 
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'About', href: '/about' }
+]
 export default function Header() {
   return (
     <div>
       <header>
-        <Link href='/'>Home</Link>
-        <Link href='/blog'>Blog</Link>
-        <Link href='/about'>About</Link>
+        <Navigation navLinks={navItems} />
       </header>
     </div>
   )
