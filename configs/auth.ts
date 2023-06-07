@@ -29,6 +29,7 @@ export const authConfig: AuthOptions = {
         password: { label: "password", type: "password", required: true },
       },
       async authorize(credentials) {
+        console.log(credentials);
         if (!credentials?.email || !credentials?.password) return null;
         const user = users.find((u) => u.email === credentials?.email);
         if (user && user.password === credentials?.password) {
@@ -39,4 +40,7 @@ export const authConfig: AuthOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: "/signin",
+  },
 };
